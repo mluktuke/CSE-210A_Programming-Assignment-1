@@ -72,12 +72,6 @@ ASTNode* Parser::Factor()
     ASTNode* node;
     switch(m_crtToken.Type)
     {
-    case OpenParenthesis:
-        GetNextToken();
-        node = Expression();
-        Match(')');
-        return node;
-
     case Minus:
         GetNextToken();
 		node = Factor();
@@ -173,8 +167,6 @@ void Parser::GetNextToken()
     case '-': m_crtToken.Type = Minus; break;
     case '*': m_crtToken.Type = Mul; break;
     case '/': m_crtToken.Type = Div; break;
-    case '(': m_crtToken.Type = OpenParenthesis; break;
-    case ')': m_crtToken.Type = ClosedParenthesis; break;
     }
 
     if(m_crtToken.Type != Error)
