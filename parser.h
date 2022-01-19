@@ -11,8 +11,6 @@ enum TokenType
    Mul,
    Div,
    EndOfText,
-   OpenParenthesis,
-   ClosedParenthesis,
    Number
 };
 
