@@ -18,12 +18,24 @@ enum TokenType
 
 struct Token 
 {
-   TokenType	Type;
-   double		Value;
-   char		Symbol;
+   TokenType Type;
+   double Value;
+   char Symbol;
 
    Token():Type(Error), Value(0), Symbol(0)
    {}
+};
+
+class ParserException : public exception
+{
+   int m_Pos;
+   
+public:
+   ParserException(const string& message, int pos):
+      exception(message.c_str()),
+      m_Pos(pos)
+   {
+   }
 };
 
 class Parser
