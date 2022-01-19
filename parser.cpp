@@ -3,19 +3,7 @@
 using namespace std;
 #include "parser.h"
 
-class ParserException : public exception
-{
-   int m_Pos;
-   
-public:
-   ParserException(const string& message, int pos):
-      exception(message.c_str()),
-      m_Pos(pos)
-   {
-   }
-};
-
-ASTNode* Expression()
+ASTNode* Parser::Expression()
 {
     ASTNode* tnode = Term();
     ASTNode* e1node = Expression1();
@@ -23,7 +11,7 @@ ASTNode* Expression()
     return CreateNode(OperatorPlus, tnode, e1node);
 }   
 
-ASTNode* Expression1()
+ASTNode* Parser::Expression1()
 {
     ASTNode* tnode;
     ASTNode* e1node;
@@ -48,7 +36,7 @@ ASTNode* Expression1()
     return CreateNodeNumber(0);
 }
 
-ASTNode* Term()
+ASTNode* Parser::Term()
 {
     ASTNode* fnode = Factor();
     ASTNode* t1node = Term1();
@@ -56,7 +44,7 @@ ASTNode* Term()
     return CreateNode(OperatorMul, fnode, t1node);
 }
 
-ASTNode* Term1()
+ASTNode* Parser::Term1()
 {
     ASTNode* fnode;
     ASTNode* t1node;
@@ -79,7 +67,7 @@ ASTNode* Term1()
     return CreateNodeNumber(1);
    }
 
-ASTNode* Factor()
+ASTNode* Parser::Factor()
 {
     ASTNode* node;
     switch(m_crtToken.Type)
@@ -111,7 +99,7 @@ ASTNode* Factor()
     }
 }
 
-ASTNode* CreateNode(ASTNodeType type, ASTNode* left, ASTNode* right)
+ASTNode* Parser::CreateNode(ASTNodeType type, ASTNode* left, ASTNode* right)
 {
     ASTNode* node = new ASTNode;
     node->Type = type;
@@ -121,7 +109,7 @@ ASTNode* CreateNode(ASTNodeType type, ASTNode* left, ASTNode* right)
     return node;
 }
 
-ASTNode* CreateUnaryNode(ASTNode* left)
+ASTNode* Parser::CreateUnaryNode(ASTNode* left)
 {
     ASTNode* node = new ASTNode;
     node->Type = UnaryMinus;
@@ -131,7 +119,7 @@ ASTNode* CreateUnaryNode(ASTNode* left)
     return node;
 }
 
-ASTNode* CreateNodeNumber(double value)
+ASTNode* Parser::CreateNodeNumber(double value)
 {
     ASTNode* node = new ASTNode;
     node->Type = NumberValue;
@@ -140,7 +128,7 @@ ASTNode* CreateNodeNumber(double value)
     return node;
 }
 
-void Match(char expected)
+void Parser::Match(char expected)
 {
     if(m_Text[m_Index-1] == expected)
         GetNextToken();
@@ -152,12 +140,12 @@ void Match(char expected)
     }
 }
 
-void SkipWhitespaces()
+void Parser::SkipWhitespaces()
 {
     while(isspace(m_Text[m_Index])) m_Index++;
 }
 
-void GetNextToken()
+void Parser::GetNextToken()
 {
     SkipWhitespaces();
 
@@ -202,7 +190,7 @@ void GetNextToken()
     }
 }
 
-double GetNumber()
+double Parser::GetNumber()
 {   
     SkipWhitespaces();
 
@@ -220,7 +208,7 @@ double GetNumber()
     return atof(buffer);
 }
 
-ASTNode* Parse(const char* text)
+ASTNode* Parser::Parse(const char* text)
 {
     m_Text = text;
     m_Index = 0;
