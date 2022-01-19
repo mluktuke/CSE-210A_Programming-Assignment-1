@@ -3,16 +3,7 @@
 using namespace std;
 #include "interpreter.h"
 
-class EvaluatorException : public exception
-{
-public:
-   EvaluatorException(const string& message):
-      exception(message.c_str())
-    {
-    }
-};
-
-double eval(ASTNode* ast)
+double Evaluator::eval(ASTNode* ast)
 {
     if(ast == NULL) 
     {
@@ -45,7 +36,7 @@ double eval(ASTNode* ast)
     throw EvaluatorException(str1.str());
    }
 
-double Eval(ASTNode* ast)
+double Evaluator::Eval(ASTNode* ast)
 {
     if(ast == NULL)
     {
